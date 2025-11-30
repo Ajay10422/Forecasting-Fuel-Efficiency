@@ -1,11 +1,84 @@
-# Forecasting Fuel Efficiency: A Data-Driven Approach to Vehicle Emissions in Canada
+# Cloud-Native Fuel Efficiency Platform (Azure & Snowflake)
 
-This repository demonstrates a **machine learning-powered dashboard** that supports **consumers, policymakers, and manufacturers** in making informed decisions about **fuel efficiency, carbon emissions, and carbon tax impacts**. The project extends the **Canadian EnerGuide system** by integrating **predictive analytics, scalable data pipelines, and interactive dashboards**.
+![Azure](https://img.shields.io/badge/Azure-ADLS%20Gen2-0078D4?logo=microsoft-azure&logoColor=white)
+![Snowflake](https://img.shields.io/badge/Snowflake-Data%20Warehouse-29B5E8?logo=snowflake&logoColor=white)
+![Airflow](https://img.shields.io/badge/Apache%20Airflow-Orchestration-017CEE?logo=apache-airflow&logoColor=white)
+![Python](https://img.shields.io/badge/Python-FastAPI-3776AB?logo=python&logoColor=white)
 
-* **Dataset**: [Government of Canada – Fuel Consumption Ratings (2015–2025)](https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64)
-* **Live Demo**: [Forecasting Fuel Efficiency](https://forecasting-fuel-efficiency.onrender.com/)
+## 📌 Project Overview
+This repository hosts a production-grade **Cloud Data Engineering Platform** designed to process large-scale government fuel datasets. It extends the Canadian EnerGuide system by replacing static CSV analysis with a scalable **ETL Pipeline** on Azure.
+
+The system orchestrates data movement from **Azure Data Lake Storage (ADLS Gen2)** into **Snowflake** using **Snowpipe** for near real-time ingestion, enabling downstream ML models to forecast carbon tax impacts.
+
+### 🟢 Live Demo
+**[Launch Forecasting Dashboard](https://dashboard-5p9c.onrender.com/)**
 
 ---
+
+## 🏗️ Enterprise Data Architecture
+The pipeline follows a **Modern Data Stack** pattern, leveraging Azure for scalable storage and Snowflake for decoupled compute.
+
+```mermaid
+graph TB
+    %% -- DATA SOURCES --
+    subgraph Sources [Data Sources]
+        CSV[Gov Canada CSVs]
+        Stream[Synthetic IoT Stream]
+    end
+
+    %% -- AZURE CLOUD --
+    subgraph Azure [Azure Cloud Infrastructure]
+        EH(Azure Event Hubs)
+        Airflow{{Apache Airflow DAGs}}
+        ADLS[(Azure Data Lake\nADLS Gen2)]
+    end
+
+    %% -- SNOWFLAKE --
+    subgraph Snow [Snowflake Data Cloud]
+        Pipe(Snowpipe Auto-Ingest)
+        Raw[(Raw Layer\nVariant Data)]
+        Clean[(Curated Layer\nStructured Tables)]
+    end
+
+    %% -- SERVING --
+    subgraph App [Application & ML]
+        ML{Scikit-learn / XGBoost}
+        API[FastAPI Backend]
+        Viz[Tableau / Streamlit]
+        React[React/Vue Frontend]
+    end
+
+    %% -- FLOWS --
+    CSV -->|Batch Ingest| Airflow
+    Stream -->|Real-Time Events| EH
+    
+    Airflow -->|Orchestrate Upload| ADLS
+    EH -->|Capture| ADLS
+    
+    ADLS -->|Trigger Notification| Pipe
+    Pipe -->|COPY INTO| Raw
+    Raw -->|dbt / SQL| Clean
+    
+    Clean -->|Training Data| ML
+    ML -->|Inference| API
+    Clean -->|BI Analytics| Viz
+    API -->|JSON Response| React
+
+    %% -- STYLING --
+    style Sources fill:#2d2d2d,stroke:#fff,color:white
+    style Azure fill:#003d73,stroke:#0078D4,color:white
+    style Snow fill:#29B5E8,stroke:#fff,color:white
+    style App fill:#2d2d2d,stroke:#00C853,color:white
+    
+    %% Node Specifics
+    style Airflow fill:#e67e22,color:white
+    style ADLS fill:#0078D4,color:white
+    style Pipe fill:#ffffff,color:black
+    
+    %% Arrows (White for Dark Mode)
+    linkStyle default stroke:white,stroke-width:2px
+
+```
 
 ## Key Features
 
