@@ -11,7 +11,7 @@ This repository hosts a production-grade **Cloud Data Engineering Platform** des
 The system orchestrates data movement from **Azure Data Lake Storage (ADLS Gen2)** into **Snowflake** using **Snowpipe** for near real-time ingestion, enabling downstream ML models to forecast carbon tax impacts.
 
 ### 🟢 Live Demo
-**[Launch Forecasting Dashboard](https://dashboard-5p9c.onrender.com/)**
+**[[Launch Forecasting Dashboard](https://dashboard-5p9c.onrender.com/)](https://forecasting-fuel-efficiency-4.onrender.com/)]]**
 
 ---
 
